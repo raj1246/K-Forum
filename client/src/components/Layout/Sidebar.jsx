@@ -1,6 +1,6 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
-import { Home, Search, Mail, Flame, User, Settings, Shield, PlusSquare, ChevronLeft, ChevronRight } from 'lucide-react';
+import { Home, Search, Mail, Flame, User, Settings, Shield, PlusSquare, ChevronLeft, ChevronRight, LogIn } from 'lucide-react';
 import { useAuth } from '../../contexts/AuthContext';
 
 const Sidebar = ({ isOpen, setIsOpen }) => {
@@ -12,7 +12,7 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
         { icon: PlusSquare, label: 'Create', path: '/create-post' },
         { icon: Flame, label: 'Wordle', path: '/wordle', highlight: true },
         // { icon: Mail, label: 'Inbox', path: '/inbox' },
-        { icon: User, label: 'Profile', path: '/profile' },
+        // { icon: User, label: 'Profile', path: '/profile' },
     ];
 
     if (user?.role === 'admin') {
@@ -31,18 +31,22 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
             {/* Toggle Button */}
             <button
                 onClick={() => setIsOpen(!isOpen)}
-                className="absolute -right-3 top-[56px] -translate-y-1/2 bg-gray-800 border border-emerald-500/30 text-emerald-400 p-1 rounded-full shadow-lg hover:bg-gray-700 hover:scale-110 transition-all z-50"
+                className="absolute -right-3 top-[56px] -translate-y-1/2 bg-gray-800 border border-emerald-500/30 text-emerald-400 p-0.5 rounded-full shadow-lg hover:bg-gray-700 hover:scale-110 transition-all z-50"
             >
-                {isOpen ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
+                {isOpen ? <ChevronLeft size={14} /> : <ChevronRight size={14} />}
             </button>
 
-            {/* Minimal Logo */}
-            <div className={`flex items-center ${isOpen ? 'justify-start pl-4' : 'justify-center'} mb-12 transition-all duration-300`}>
-                <div className="w-12 h-12 shrink-0 bg-gradient-to-tr from-emerald-400 to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/20 animate-float">
-                    <span className="text-white font-extrabold text-2xl">K</span>
-                </div>
-                <div className={`ml-4 overflow-hidden transition-all duration-300 ${isOpen ? 'w-auto opacity-100' : 'w-0 opacity-0'}`}>
-                    <span className="text-xl font-bold text-white whitespace-nowrap">K-Forum</span>
+            {/* Minimal Logo - Static K, Expandable Text */}
+            <div className="px-4 mb-12">
+                <div className="flex items-center">
+                    {/* K Bubble - Always Centered */}
+                    <div className="w-12 h-12 shrink-0 bg-gradient-to-tr from-emerald-400 to-cyan-500 rounded-2xl flex items-center justify-center shadow-lg shadow-emerald-500/20 animate-float">
+                        <span className="text-white font-extrabold text-2xl">K</span>
+                    </div>
+                    {/* K-Forum Text - Appears When Expanded */}
+                    <div className={`ml-4 overflow-hidden transition-all duration-300 ${isOpen ? 'w-auto opacity-100' : 'w-0 opacity-0'}`}>
+                        <span className="text-xl font-bold text-white whitespace-nowrap">K-Forum</span>
+                    </div>
                 </div>
             </div>
 
@@ -84,15 +88,27 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                 ))}
             </nav>
 
-            {/* User Profile Bubble */}
-            {user && (
-                <div className={`mt-auto relative group px-4 w-full transition-all duration-300 ${isOpen ? 'flex items-center gap-3 px-2' : ''}`}>
-                    <div className="w-10 h-10 shrink-0 rounded-full border-2 border-emerald-500/30 p-[2px] cursor-pointer hover:border-emerald-400 transition-colors">
-                        <img
-                            src={user.avatar || `https://ui-avatars.com/api/?name=${user.name}&background=10b981&color=fff`}
-                            alt={user.name}
-                            className="w-full h-full rounded-full object-cover"
-                        />
+            {/* User Profile Bubble or Sign In Button */}
+            {user ? (
+                <NavLink
+                    to="/profile"
+                    className={({ isActive }) => `
+                        mt-auto relative group px-4 w-full transition-all duration-300 
+                        ${isOpen ? 'flex items-center gap-3 px-2' : ''}
+                        rounded-2xl hover:bg-white/5 py-2
+                        ${isActive ? 'bg-white/5 border border-white/10' : ''}
+                    `}
+                >
+                    <div className="w-10 h-10 shrink-0 rounded-full border-2 border-emerald-500/30 p-[2px] cursor-pointer hover:border-emerald-400 transition-colors flex items-center justify-center bg-gray-800">
+                        {user.avatar ? (
+                            <img
+                                src={user.avatar}
+                                alt={user.name}
+                                className="w-full h-full rounded-full object-cover"
+                            />
+                        ) : (
+                            <User className="w-5 h-5 text-emerald-400" />
+                        )}
                     </div>
 
                     <div className={`overflow-hidden transition-all duration-300 ${isOpen ? 'w-auto opacity-100' : 'w-0 opacity-0'}`}>
@@ -108,7 +124,29 @@ const Sidebar = ({ isOpen, setIsOpen }) => {
                             <div className="mt-2 text-xs text-emerald-500 font-mono">ONLINE / {user.role || 'STUDENT'}</div>
                         </div>
                     )}
-                </div>
+                </NavLink>
+            ) : (
+                <NavLink
+                    to="/login"
+                    className="mt-auto relative group px-4 w-full transition-all duration-300 rounded-2xl hover:bg-white/5 py-2"
+                >
+                    <div className={`flex items-center ${isOpen ? 'gap-3' : 'justify-center'}`}>
+                        <div className="w-10 h-10 shrink-0 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/30 hover:shadow-emerald-500/50 transition-all hover:scale-105">
+                            <LogIn className="w-5 h-5 text-white" />
+                        </div>
+
+                        <span className={`font-semibold text-white whitespace-nowrap transition-all duration-300 ${isOpen ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-10 absolute'}`}>
+                            Sign In
+                        </span>
+                    </div>
+
+                    {/* Sign In Tooltip (Only when collapsed) */}
+                    {!isOpen && (
+                        <span className="absolute left-16 bottom-2 px-4 py-2 bg-gray-900 border border-emerald-500/30 text-emerald-400 text-sm font-bold rounded-xl opacity-0 group-hover:opacity-100 translate-x-2 group-hover:translate-x-0 transition-all duration-300 pointer-events-none whitespace-nowrap z-50 shadow-2xl backdrop-blur-md">
+                            Sign In
+                        </span>
+                    )}
+                </NavLink>
             )}
         </div>
     );

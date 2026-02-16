@@ -24,7 +24,10 @@ const MobileHeader = () => {
         { path: '/buddy-connect', icon: Users, label: 'Buddy Connect' },
         { path: '/wordle', icon: Gamepad2, label: 'K-Wordle' },
         { path: '/', icon: Search, label: 'Search' },
-        { path: '/profile', icon: User, label: 'Profile' }
+        // Conditionally show "Sign In" or "Profile" based on user login status
+        user
+            ? { path: '/profile', icon: User, label: 'Profile' }
+            : { path: '/login', icon: User, label: 'Sign In' }
     ];
 
     if (user?.role === 'admin') {

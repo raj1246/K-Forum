@@ -2,7 +2,8 @@ import axios from 'axios';
 import { mockApi } from './mockApi';
 import toast from 'react-hot-toast';
 
-export const API_BASE_URL = import.meta.env.VITE_BACKEND_API || 'http://localhost:5001';
+// Use empty string in dev (goes through Vite proxy), or env variable for production
+export const API_BASE_URL = import.meta.env.VITE_BACKEND_API || '';
 
 const api = axios.create({
     baseURL: API_BASE_URL

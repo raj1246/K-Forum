@@ -74,8 +74,8 @@ const BuddyConnect = () => {
             </h3>
             <div className="space-y-4">
                 {suggestions.map(user => (
-                    <div key={user._id} className="flex items-center relative group min-h-[44px]">
-                        <div className="flex items-center gap-3 pr-12">
+                    <div key={user._id} className="flex items-center justify-between group min-h-[44px]">
+                        <div className="flex items-center gap-3 overflow-hidden">
                             <div className="relative shrink-0">
                                 <img
                                     src={user.avatar || `https://ui-avatars.com/api/?name=${user.name}&background=random`}
@@ -88,16 +88,17 @@ const BuddyConnect = () => {
                                     </div>
                                 )}
                             </div>
-                            <div className="overflow-hidden">
-                                <h4 className="text-sm font-bold text-gray-200 truncate w-28 lg:w-32">{user.name}</h4>
+                            <div className="min-w-0">
+                                <h4 className="text-sm font-bold text-gray-200 truncate">{user.name}</h4>
                                 <p className="text-xs text-gray-500 truncate">{getBranchAbbreviation(user.branch)} • {user.year} Year</p>
                             </div>
                         </div>
+
                         <button
                             onClick={() => handleConnect(user._id)}
                             disabled={sentRequests.includes(user._id)}
                             className={`
-                                absolute right-0 top-1/2 -translate-y-1/2
+                                shrink-0 ml-2
                                 p-2 rounded-xl transition-all duration-300
                                 ${sentRequests.includes(user._id)
                                     ? 'bg-emerald-500/10 text-emerald-400 cursor-default'

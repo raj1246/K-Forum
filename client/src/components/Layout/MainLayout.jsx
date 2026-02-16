@@ -20,7 +20,7 @@ const MainLayout = ({ children }) => {
             {/* Main Content Area */}
             <main className={`
                 relative z-10 
-                pt-[120px] md:pt-8 
+                pt-[68px] md:pt-8 
                 px-4 md:px-8 
                 pb-24 md:pb-8
                 min-h-screen
